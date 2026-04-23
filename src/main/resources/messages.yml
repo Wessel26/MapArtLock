@@ -1,0 +1,4 @@
+map-art-lock:
+  successfully-locked: '<green>You''ve successfully locked your map art for <yellow><cost> <green>coins.'
+
+config-version: 1

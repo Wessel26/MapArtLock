@@ -1,0 +1,12 @@
+name: MapArtLock
+version: '${version}'
+
+main: nl.chimpgamer.mapartlock.MapArtLockPlugin
+loader: nl.chimpgamer.mapartlock.MapArtLockLoader
+api-version: '1.21.8'
+load: POSTWORLD
+
+authors: [ ChimpGamer ]
+
+build-date: ${buildDate}
+build-number: ${buildNumber}
