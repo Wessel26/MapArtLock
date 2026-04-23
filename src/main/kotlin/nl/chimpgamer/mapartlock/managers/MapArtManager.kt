@@ -26,11 +26,11 @@ class MapArtManager(private val plugin: MapArtLockPlugin) {
     }
 
     fun isMapArtLocked(itemStack: ItemStack): Boolean {
-        return itemStack.itemMeta?.persistentDataContainer?.get(plugin.mapArtLockedKey, PersistentDataType.BOOLEAN) ?: false
+        return itemStack.persistentDataContainer.get(plugin.mapArtLockedKey, PersistentDataType.BOOLEAN) ?: false
     }
 
     fun getMapArtOwner(itemStack: ItemStack): UUID? {
-        return itemStack.itemMeta?.persistentDataContainer?.get(plugin.mapArtOwnerKey, UUIDDataType)
+        return itemStack.persistentDataContainer.get(plugin.mapArtOwnerKey, UUIDDataType)
     }
 
     fun isMapArtOwnedBy(itemStack: ItemStack, player: Player): Boolean {
