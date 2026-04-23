@@ -2,6 +2,7 @@ package nl.chimpgamer.mapartlock
 
 import nl.chimpgamer.mapartlock.configurations.MessagesConfig
 import nl.chimpgamer.mapartlock.configurations.SettingsConfig
+import nl.chimpgamer.mapartlock.listeners.MapProtectionListener
 import nl.chimpgamer.mapartlock.managers.CloudCommandManager
 import nl.chimpgamer.mapartlock.managers.MapArtManager
 import org.bukkit.NamespacedKey
@@ -29,6 +30,8 @@ class MapArtLockPlugin : JavaPlugin() {
 
         cloudCommandManager.initialize()
         cloudCommandManager.loadCommands()
+
+        server.pluginManager.registerEvents(MapProtectionListener(this), this)
     }
 
     override fun onDisable() {

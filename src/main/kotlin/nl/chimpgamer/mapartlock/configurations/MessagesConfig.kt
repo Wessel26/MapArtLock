@@ -12,6 +12,10 @@ class MessagesConfig(plugin: MapArtLockPlugin) {
     val config: YamlDocument
 
     val mapArtLockSuccessfullyLocked: String get() = config.getString("map-art-lock.successfully-locked")
+    val mapArtLockSuccessfullyUnlocked: String get() = config.getString("map-art-lock.successfully-unlocked")
+    val mapArtLockNotHoldingMap: String get() = config.getString("map-art-lock.not-holding-map")
+    val mapArtLockAlreadyLocked: String get() = config.getString("map-art-lock.already-locked")
+    val mapArtLockAlreadyUnlocked: String get() = config.getString("map-art-lock.already-unlocked")
 
     init {
         val file = plugin.dataFolder.resolve("messages.yml")

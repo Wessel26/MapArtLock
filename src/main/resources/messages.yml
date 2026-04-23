@@ -1,4 +1,8 @@
 map-art-lock:
   successfully-locked: '<green>You''ve successfully locked your map art for <yellow><cost> <green>coins.'
+  successfully-unlocked: '<green>You''ve successfully unlocked your map art.'
+  not-holding-map: '<red>You must be holding a map to lock/unlock it.'
+  already-locked: '<red>You''ve already locked your map art.'
+  already-unlocked: '<red>You''ve already unlocked your map art.'
 
 config-version: 1

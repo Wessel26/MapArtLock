@@ -29,11 +29,33 @@ class MapArtLockCommand(private val plugin: MapArtLockPlugin) {
 
         commandManager.command(builder
             .senderType(PlayerSource::class.java)
-            .literal("lock")
+            .literal("lock", "protect")
             .permission("$basePermissions.lock")
             .handler { context ->
                 val sender = context.sender().source()
 
+                val mapArtManager = plugin.mapArtManager
+                val itemInHand = sender.inventory.itemInMainHand
+                if (!mapArtManager.isMap(itemInHand)) {
+                    sender.sendMessage(plugin.messagesConfig.mapArtLockNotHoldingMap)
+                    return@handler
+                }
+
+                if (mapArtManager.isMapArtLocked(itemInHand)) {
+                    sender.sendMessage(plugin.messagesConfig.mapArtLockAlreadyLocked)
+                    return@handler
+                }
+
+                
+            }
+        )
+
+        commandManager.command(builder
+            .senderType(PlayerSource::class.java)
+            .literal("unlock", "unprotect")
+            .permission("$basePermissions.unlock")
+            .handler { context ->
+                val sender = context.sender().source()
             }
         )
     }

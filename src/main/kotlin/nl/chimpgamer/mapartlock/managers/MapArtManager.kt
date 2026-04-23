@@ -2,12 +2,17 @@ package nl.chimpgamer.mapartlock.managers
 
 import nl.chimpgamer.mapartlock.MapArtLockPlugin
 import nl.chimpgamer.mapartlock.utils.UUIDDataType
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import java.util.UUID
 
 class MapArtManager(private val plugin: MapArtLockPlugin) {
+
+    fun isMap(itemStack: ItemStack?): Boolean {
+        return itemStack != null && itemStack.type === Material.MAP
+    }
 
     fun lockMapArt(itemStack: ItemStack, player: Player) {
         itemStack.editMeta { meta ->
