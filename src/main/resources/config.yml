@@ -1,0 +1,8 @@
+open-on-right-click: true
+enable-glint: true
+show-owner-in-lore: true
+block-anvil: true
+block-crafting: true
+block-cartography: true
+block-crafter: true
+admin-bypass-protection: false

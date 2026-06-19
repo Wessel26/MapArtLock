@@ -2,11 +2,18 @@ name: MapArtLock
 version: '${version}'
 
 main: nl.chimpgamer.mapartlock.MapArtLockPlugin
-loader: nl.chimpgamer.mapartlock.MapArtLockLoader
-api-version: '1.21.8'
+api-version: '1.21'
 load: POSTWORLD
 
-authors: [ ChimpGamer ]
+authors: [ ChimpGamer, HetGoed ]
+description: Protect filled map art from duplication and unwanted edits.
 
-build-date: ${buildDate}
-build-number: ${buildNumber}
+permissions:
+  mapart.*:
+    description: "Userrechten: /mapart openen, right-click GUI openen en eigen mapart locken/unlocken."
+    default: false
+  mapart.admin:
+    description: "Adminrechten: andermans mapart locken/unlocken en /mapart version plus /mapart reload gebruiken."
+    default: op
+    children:
+      mapart.*: true
