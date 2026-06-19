@@ -1,11 +1,10 @@
-import java.text.SimpleDateFormat
-import java.util.Date
-
 plugins {
-    kotlin("jvm") version libs.versions.kotlin.get()
-    alias(libs.plugins.shadow)
-    alias(libs.plugins.run.paper)
+    java
+    kotlin("jvm")
 }
+
+group = "nl.chimpgamer"
+version = "1.1.9"
 
 repositories {
     mavenCentral()
@@ -13,40 +12,23 @@ repositories {
 }
 
 dependencies {
-    compileOnly(libs.paper.api)
-    compileOnly(libs.kotlin.stdlib)
-    compileOnly(libs.boosted.yaml)
-    compileOnly(libs.cloud.core)
-    compileOnly(libs.cloud.paper)
-    compileOnly(libs.cloud.minecraft.extras)
-    compileOnly(libs.cloud.kotlin.coroutines)
+    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
+    implementation(kotlin("stdlib-jdk8"))
 }
 
-kotlin {
-    jvmToolchain(25)
-}
-
-tasks {
-    build {
-        dependsOn(shadowJar)
-    }
-
-    runServer {
-        minecraftVersion(libs.versions.minecraft.get())
-        jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
-    }
-
-    processResources {
-        val buildNumber = System.getenv("BUILD_NUMBER") ?: "SNAPSHOT"
-        val props = mapOf("version" to version, "buildNumber" to buildNumber, "buildDate" to getDate())
-        filesMatching("paper-plugin.yml") {
-            expand(props)
-        }
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(25)
     }
 }
 
-fun getDate(): String {
-    val simpleDateFormat = SimpleDateFormat("dd-MM-yyyy hh:mm:ss")
-    val date = Date()
-    return simpleDateFormat.format(date)
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.release.set(25)
+}
+
+tasks.processResources {
+    filesMatching("paper-plugin.yml") {
+        expand("version" to project.version)
+    }
 }

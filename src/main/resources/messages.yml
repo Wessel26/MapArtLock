@@ -1,8 +1,13 @@
-map-art-lock:
-  successfully-locked: '<green>You''ve successfully locked your map art for <yellow><cost> <green>coins.'
-  successfully-unlocked: '<green>You''ve successfully unlocked your map art.'
-  not-holding-map: '<red>You must be holding a map to lock/unlock it.'
-  already-locked: '<red>You''ve already locked your map art.'
-  already-unlocked: '<red>You''ve already unlocked your map art.'
-
-config-version: 1
+map_locked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>is succesvol gelockt.</yellow>"
+map_unlocked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>is succesvol ontgrendeld.</yellow>"
+already_locked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>is al gelockt.</yellow>"
+already_unlocked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>is al ontgrendeld.</yellow>"
+not_owner: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <red>behoort niet aan jou.</red>"
+must_hold_map: "<gray>[</gray><gold>TC</gold><gray>]</gray> <yellow>Je moet een</yellow> <#ff8c00>ingevulde kaart</#ff8c00> <yellow>vasthouden.</yellow>"
+no_permission: "<gray>[</gray><gold>TC</gold><gray>]</gray> <red>Je hebt hier geen rechten voor.</red>"
+map_info: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>informatie:</yellow><newline><gray>Map ID:</gray> <red><map_id></red><newline><gray>Owner:</gray> <#ff8c00><owner></#ff8c00><newline><gray>Locked:</gray> <yellow><locked></yellow><newline><gray>Locked At:</gray> <yellow><locked_at></yellow>"
+map_info_unlocked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <yellow>is niet gelockt.</yellow>"
+config_reloaded: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArtLock</#ff8c00> <yellow>configuratie en berichten zijn herladen.</yellow>"
+usage: "<gray>[</gray><gold>TC</gold><gray>]</gray> <yellow>Gebruik:</yellow> <#ff8c00>/mapart</#ff8c00><yellow>,</yellow> <#ff8c00>/mapart reload</#ff8c00><yellow>,</yellow> <#ff8c00>/mapart version</#ff8c00>"
+protected_inventory_blocked: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArt</#ff8c00> <red>kan hier niet worden geplaatst.</red>"
+version: "<gray>[</gray><gold>TC</gold><gray>]</gray> <#ff8c00>MapArtLock</#ff8c00> <yellow>versie:</yellow> <#ff8c00><version></#ff8c00>"
