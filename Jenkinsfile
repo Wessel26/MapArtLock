@@ -1,21 +1,21 @@
-
 pipeline {
     agent any
 
     tools {
         jdk 'JDK-17'
+        maven 'Maven'
     }
 
     stages {
         stage('Build') {
             steps {
-                sh './gradlew clean build'
+                sh 'mvn clean package'
             }
         }
 
         stage('Archive plugin jar') {
             steps {
-                archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
             }
         }
     }
