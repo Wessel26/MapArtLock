@@ -1,6 +1,7 @@
 plugins {
     java
     alias(libs.plugins.sonarqube)
+    alias(libs.plugins.run.paper)
 }
 
 group = "nl.chimpgamer"
@@ -26,9 +27,16 @@ tasks.withType<JavaCompile> {
     options.release.set(25)
 }
 
-tasks.processResources {
-    filesMatching("paper-plugin.yml") {
-        expand("version" to project.version)
+tasks {
+    processResources {
+        filesMatching("paper-plugin.yml") {
+            expand("version" to project.version)
+        }
+    }
+
+    runServer {
+        minecraftVersion(libs.versions.minecraft.get())
+        jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
     }
 }
 
