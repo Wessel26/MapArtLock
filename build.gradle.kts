@@ -33,3 +33,11 @@ tasks.processResources {
         expand("version" to project.version)
     }
 }
+
+sonar {
+    properties {
+        property("sonar.projectKey", "map-art-lock")
+        property("sonar.projectVersion", project.version.toString())
+        property("sonar.sourceEncoding", "UTF-8")
+    }
+}
