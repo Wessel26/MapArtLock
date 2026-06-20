@@ -1,7 +1,7 @@
 plugins {
     java
     kotlin("jvm")
-    libs.plugins.sonarqube
+    alias(libs.plugins.sonarqube)
 }
 
 group = "nl.chimpgamer"
