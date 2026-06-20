@@ -9,6 +9,7 @@ cloud-minecraft = "2.0.0-beta.15"
 
 shadow = "9.4.1"
 run-task = "3.0.2"
+sonarqube = "7.3.1.8318"
 
 [libraries]
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper-api" }
@@ -23,3 +24,4 @@ cloud-kotlin-coroutines = { module = "org.incendo:cloud-kotlin-coroutines", vers
 [plugins]
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-task" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
