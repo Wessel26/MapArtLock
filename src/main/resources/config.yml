@@ -1,8 +1,37 @@
-open-on-right-click: true
-enable-glint: true
-show-owner-in-lore: true
-block-anvil: true
-block-crafting: true
-block-cartography: true
-block-crafter: true
-admin-bypass-protection: false
+# MapArtLock
+#
+# Een lock hoort bij de map-ID van de kaart, niet bij een los item. Alle kopieen van
+# dezelfde map art vallen daardoor onder dezelfde lock - ook een kopie die met /give
+# uit het niets komt. De lore en glans op een kaart zijn puur cosmetisch.
+#
+# Locks staan in de persistent data container van de hoofdwereld, dus in level.dat,
+# naast de kaartbestanden zelf in world/data/. Locks en kunstwerk delen daardoor een
+# levenscyclus: zet je een wereldbackup terug, dan rollen ze samen terug.
+
+menu:
+  # Sneak + rechtermuisknop op een ingevulde kaart opent het menu.
+  # Bewust sneak: een gewone rechtermuisknop plaatst de kaart in een item frame.
+  open-on-sneak-right-click: true
+
+appearance:
+  glint: true
+  show-owner-in-lore: true
+  # Werkt de lore bij zodra een speler de kaart oppakt. Nodig omdat een beschermde
+  # kopie anders zonder lore rondgaat.
+  sync-lore-when-held: true
+
+protection:
+  anvil: true
+  crafting-table: true
+  cartography-table: true
+  crafter: true
+  # Voorkomt dat een gelockte kaart uit een frame gehaald, gedraaid of weggeblazen
+  # wordt. Een kaart in een leeg frame plaatsen blijft gewoon werken.
+  item-frames: true
+  hoppers: true
+
+admin:
+  # Of mapartlock.bypass iets doet. Op false is de bescherming absoluut, ook voor jou.
+  bypass-enabled: true
+  # Logt lock- en unlock-acties naar de console.
+  log-actions: true

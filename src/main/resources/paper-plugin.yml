@@ -6,14 +6,31 @@ api-version: '1.21'
 load: POSTWORLD
 
 authors: [ ChimpGamer, HetGoed ]
-description: Protect filled map art from duplication and unwanted edits.
+description: Beschermt map art tegen duplicatie, diefstal en vernieling.
 
+# LET OP - de twee prefixen zijn bewust gescheiden, en die scheiding is de beveiliging.
+#
+# mapartlock.* is de spelersnode. Hij is de enige node onder "mapartlock.", dus die
+# wildcard spant over een lege namespace en kan nergens in expanderen. Alle
+# beheerdersrechten heten daarom mapart. en vallen erbuiten.
+#
+# Voeg NOOIT een tweede node toe die met "mapartlock." begint. Een mapartlock.admin
+# zou door de wildcard worden opgeslokt en aan iedere speler gegeven worden.
+# Nieuwe rechten horen onder mapart. te komen.
 permissions:
-  mapart.*:
-    description: "Userrechten: /mapart openen, right-click GUI openen en eigen mapart locken/unlocken."
+  mapartlock.*:
+    description: "Spelersrechten: menu openen en eigen map art locken/unlocken."
+    default: false
+  mapart.bypass:
+    description: "Door de bescherming heen werken."
+    default: false
+  mapart.reload:
+    description: "/mapartlock reload gebruiken."
     default: false
   mapart.admin:
-    description: "Adminrechten: andermans mapart locken/unlocken en /mapart version plus /mapart reload gebruiken."
+    description: "Volledige beheerdersrechten, inclusief andermans map art unlocken."
     default: op
     children:
-      mapart.*: true
+      mapartlock.*: true
+      mapart.bypass: true
+      mapart.reload: true
