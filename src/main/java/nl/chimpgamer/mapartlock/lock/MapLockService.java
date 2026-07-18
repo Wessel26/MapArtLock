@@ -7,37 +7,48 @@ import nl.chimpgamer.mapartlock.config.Settings;
 import nl.chimpgamer.mapartlock.item.MapDecorator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.plugin.Plugin;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
 
 /**
- * Every rule about locking lives here, so the listeners stay thin and cannot drift apart.
+ * Every rule about locking, and the only place that touches the item's data.
+ *
+ * <p>The lock lives on the item itself, which means there is nothing to load, nothing to save
+ * and nothing held in memory. Protection is exactly as durable as the item: it travels along
+ * into chests, shulkers and backups on its own.
+ *
+ * <p>The trade-off is that protection follows the item rather than the artwork. Somebody who
+ * can run {@code /give filled_map[map_id=...]} gets an unprotected copy — but that requires
+ * powers with which they could also disable this plugin outright.
  */
 public final class MapLockService {
     private final Settings settings;
-    private final LockRegistry registry;
     private final MapDecorator decorator;
+    private final NamespacedKey ownerKey;
+    private final NamespacedKey lockedAtKey;
 
-    public MapLockService(Settings settings, LockRegistry registry, MapDecorator decorator) {
+    public MapLockService(Plugin plugin, Settings settings, MapDecorator decorator) {
         this.settings = settings;
-        this.registry = registry;
         this.decorator = decorator;
+        this.ownerKey = new NamespacedKey(plugin, "owner");
+        this.lockedAtKey = new NamespacedKey(plugin, "locked_at");
     }
 
     public boolean isFilledMap(ItemStack itemStack) {
         return itemStack != null && itemStack.getType() == Material.FILLED_MAP;
     }
 
-    /**
-     * Read straight off the item's map_id data component: no deprecated MapMeta call, no
-     * MapView lookup that returns null for an unloaded world, and no ItemMeta clone on what is
-     * the hottest path in the plugin.
-     */
+    /** The vanilla map id. Only used for display and logging; it is not what identifies a lock. */
     public OptionalInt mapId(ItemStack itemStack) {
         if (!isFilledMap(itemStack)) {
             return OptionalInt.empty();
@@ -48,8 +59,22 @@ public final class MapLockService {
     }
 
     public Optional<MapLock> lockOf(ItemStack itemStack) {
-        OptionalInt mapId = mapId(itemStack);
-        return mapId.isPresent() ? registry.find(mapId.getAsInt()) : Optional.empty();
+        if (!isFilledMap(itemStack) || !itemStack.hasItemMeta()) {
+            return Optional.empty();
+        }
+
+        PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+        Long lockedAt = container.get(lockedAtKey, PersistentDataType.LONG);
+        if (lockedAt == null) {
+            return Optional.empty();
+        }
+
+        try {
+            UUID owner = container.get(ownerKey, UuidType.INSTANCE);
+            return owner == null ? Optional.empty() : Optional.of(new MapLock(owner, Instant.ofEpochSecond(lockedAt)));
+        } catch (IllegalArgumentException malformed) {
+            return Optional.empty();
+        }
     }
 
     public boolean isLocked(ItemStack itemStack) {
@@ -67,33 +92,31 @@ public final class MapLockService {
     }
 
     public LockOutcome lock(ItemStack itemStack, Player player) {
-        OptionalInt mapId = mapId(itemStack);
         if (!isFilledMap(itemStack)) {
             return LockOutcome.NOT_A_MAP;
         }
-        if (mapId.isEmpty()) {
+        if (mapId(itemStack).isEmpty()) {
             return LockOutcome.NO_MAP_DATA;
         }
-        if (registry.isLocked(mapId.getAsInt())) {
+        if (isLocked(itemStack)) {
             return LockOutcome.ALREADY_LOCKED;
         }
 
-        MapLock lock = MapLock.now(mapId.getAsInt(), player.getUniqueId());
-        registry.put(lock);
+        MapLock lock = MapLock.now(player.getUniqueId());
+        itemStack.editPersistentDataContainer(container -> {
+            container.set(ownerKey, UuidType.INSTANCE, lock.owner());
+            container.set(lockedAtKey, PersistentDataType.LONG, lock.lockedAt().getEpochSecond());
+        });
         decorator.markLocked(itemStack, ownerName(lock.owner()));
         return LockOutcome.LOCKED;
     }
 
     public LockOutcome unlock(ItemStack itemStack, Player player) {
-        OptionalInt mapId = mapId(itemStack);
         if (!isFilledMap(itemStack)) {
             return LockOutcome.NOT_A_MAP;
         }
-        if (mapId.isEmpty()) {
-            return LockOutcome.NO_MAP_DATA;
-        }
 
-        Optional<MapLock> existing = registry.find(mapId.getAsInt());
+        Optional<MapLock> existing = lockOf(itemStack);
         if (existing.isEmpty()) {
             return LockOutcome.ALREADY_UNLOCKED;
         }
@@ -101,45 +124,17 @@ public final class MapLockService {
             return LockOutcome.NOT_OWNER;
         }
 
-        registry.remove(mapId.getAsInt());
+        itemStack.editPersistentDataContainer(container -> {
+            container.remove(ownerKey);
+            container.remove(lockedAtKey);
+        });
         decorator.clear(itemStack);
         return LockOutcome.UNLOCKED;
-    }
-
-    /**
-     * Brings an item's cosmetics in line with the registry. A copy made before the lock, or one
-     * conjured with {@code /give}, carries no lore even though it is protected.
-     *
-     * @return true when the item changed
-     */
-    public boolean refreshDecoration(ItemStack itemStack) {
-        if (!isFilledMap(itemStack)) {
-            return false;
-        }
-
-        Optional<MapLock> lock = lockOf(itemStack);
-        if (lock.isPresent()) {
-            if (decorator.isDecorated(itemStack)) {
-                return false;
-            }
-            decorator.markLocked(itemStack, ownerName(lock.get().owner()));
-            return true;
-        }
-
-        if (!decorator.isDecorated(itemStack)) {
-            return false;
-        }
-        decorator.clear(itemStack);
-        return true;
     }
 
     public String ownerName(UUID owner) {
         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(owner);
         String name = offlinePlayer.getName();
         return name == null ? owner.toString() : name;
-    }
-
-    public int lockCount() {
-        return registry.size();
     }
 }

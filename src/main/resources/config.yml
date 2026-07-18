@@ -1,12 +1,11 @@
 # MapArtLock
 #
-# Een lock hoort bij de map-ID van de kaart, niet bij een los item. Alle kopieen van
-# dezelfde map art vallen daardoor onder dezelfde lock - ook een kopie die met /give
-# uit het niets komt. De lore en glans op een kaart zijn puur cosmetisch.
+# De bescherming staat in de persistent data container van de kaart zelf. Er is dus
+# geen opslagbestand, niets in het geheugen en niets om te synchroniseren: de
+# bescherming reist mee in kisten, shulkers en backups.
 #
-# Locks staan in de persistent data container van de hoofdwereld, dus in level.dat,
-# naast de kaartbestanden zelf in world/data/. Locks en kunstwerk delen daardoor een
-# levenscyclus: zet je een wereldbackup terug, dan rollen ze samen terug.
+# Let op: bescherming volgt het item, niet het kunstwerk. Wie /give kan draaien maakt
+# een onbeschermde kopie - maar met die rechten kan hij deze plugin ook uitzetten.
 
 menu:
   # Sneak + rechtermuisknop op een ingevulde kaart opent het menu.
@@ -16,9 +15,6 @@ menu:
 appearance:
   glint: true
   show-owner-in-lore: true
-  # Werkt de lore bij zodra een speler de kaart oppakt. Nodig omdat een beschermde
-  # kopie anders zonder lore rondgaat.
-  sync-lore-when-held: true
 
 protection:
   anvil: true

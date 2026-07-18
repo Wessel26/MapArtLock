@@ -4,17 +4,13 @@ import java.time.Instant;
 import java.util.UUID;
 
 /**
- * A lock on one piece of map art, keyed by the vanilla map id.
+ * The lock carried by one map item: who owns it and since when.
  *
- * <p>That id is what makes the protection hold: every copy of a filled map carries the same id
- * and points at the same {@code world/data/map_<id>.dat}, so one lock covers all of them —
- * including a copy conjured with {@code /give}.
+ * <p>There is no separate "locked" flag. The presence of the owner is the lock, which is why
+ * nothing on the item has to encode a boolean.
  */
-public record MapLock(int mapId, UUID owner, Instant lockedAt) {
+public record MapLock(UUID owner, Instant lockedAt) {
     public MapLock {
-        if (mapId < 0) {
-            throw new IllegalArgumentException("mapId moet 0 of hoger zijn, was " + mapId);
-        }
         if (owner == null) {
             throw new IllegalArgumentException("owner mag niet null zijn");
         }
@@ -23,8 +19,8 @@ public record MapLock(int mapId, UUID owner, Instant lockedAt) {
         }
     }
 
-    public static MapLock now(int mapId, UUID owner) {
-        return new MapLock(mapId, owner, Instant.now());
+    public static MapLock now(UUID owner) {
+        return new MapLock(owner, Instant.now());
     }
 
     public boolean isOwnedBy(UUID candidate) {

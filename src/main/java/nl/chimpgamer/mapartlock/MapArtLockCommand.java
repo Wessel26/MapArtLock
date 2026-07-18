@@ -5,7 +5,6 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import nl.chimpgamer.mapartlock.config.Messages;
 import nl.chimpgamer.mapartlock.config.Settings;
-import nl.chimpgamer.mapartlock.lock.MapLockService;
 import nl.chimpgamer.mapartlock.menu.LockMenu;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -30,15 +29,13 @@ public final class MapArtLockCommand implements BasicCommand {
     private final Settings settings;
     private final Messages messages;
     private final LockMenu menu;
-    private final MapLockService service;
 
     public MapArtLockCommand(JavaPlugin plugin, Settings settings, Messages messages,
-                             LockMenu menu, MapLockService service) {
+                             LockMenu menu) {
         this.plugin = plugin;
         this.settings = settings;
         this.messages = messages;
         this.menu = menu;
-        this.service = service;
     }
 
     @Override
@@ -98,11 +95,9 @@ public final class MapArtLockCommand implements BasicCommand {
         }
 
         plugin.reloadConfig();
-        settings.reload(plugin.getConfig());
         messages.reload();
 
         messages.send(sender, "config_reloaded",
-                Placeholder.unparsed("locks", String.valueOf(service.lockCount())),
                 Placeholder.unparsed("protections", settings.activeProtections()));
     }
 }

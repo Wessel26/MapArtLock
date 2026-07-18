@@ -1,102 +1,81 @@
 package nl.chimpgamer.mapartlock.config;
 
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.Plugin;
 
+/**
+ * Reads config.yml on demand, the same way {@link Messages} reads its file.
+ *
+ * <p>Nothing is copied into fields: Bukkit already holds the parsed tree, so a second copy would
+ * only add a way for the two to disagree. It also means {@code reloadConfig()} is enough to make
+ * a change take effect — there is no cache to refresh.
+ */
 public final class Settings {
-    private boolean openMenuOnSneakRightClick;
-    private boolean glint;
-    private boolean showOwnerInLore;
-    private boolean syncLoreWhenHeld;
-    private boolean protectAnvil;
-    private boolean protectCraftingTable;
-    private boolean protectCartographyTable;
-    private boolean protectCrafter;
-    private boolean protectItemFrames;
-    private boolean protectAgainstHoppers;
-    private boolean bypassEnabled;
-    private boolean logActions;
+    private final Plugin plugin;
 
-    public Settings(FileConfiguration config) {
-        reload(config);
-    }
-
-    public void reload(FileConfiguration config) {
-        openMenuOnSneakRightClick = config.getBoolean("menu.open-on-sneak-right-click", true);
-
-        glint = config.getBoolean("appearance.glint", true);
-        showOwnerInLore = config.getBoolean("appearance.show-owner-in-lore", true);
-        syncLoreWhenHeld = config.getBoolean("appearance.sync-lore-when-held", true);
-
-        protectAnvil = config.getBoolean("protection.anvil", true);
-        protectCraftingTable = config.getBoolean("protection.crafting-table", true);
-        protectCartographyTable = config.getBoolean("protection.cartography-table", true);
-        protectCrafter = config.getBoolean("protection.crafter", true);
-        protectItemFrames = config.getBoolean("protection.item-frames", true);
-        protectAgainstHoppers = config.getBoolean("protection.hoppers", true);
-
-        bypassEnabled = config.getBoolean("admin.bypass-enabled", true);
-        logActions = config.getBoolean("admin.log-actions", true);
+    public Settings(Plugin plugin) {
+        this.plugin = plugin;
     }
 
     public boolean openMenuOnSneakRightClick() {
-        return openMenuOnSneakRightClick;
+        return flag("menu.open-on-sneak-right-click");
     }
 
     public boolean glint() {
-        return glint;
+        return flag("appearance.glint");
     }
 
     public boolean showOwnerInLore() {
-        return showOwnerInLore;
-    }
-
-    public boolean syncLoreWhenHeld() {
-        return syncLoreWhenHeld;
+        return flag("appearance.show-owner-in-lore");
     }
 
     public boolean protectAnvil() {
-        return protectAnvil;
+        return flag("protection.anvil");
     }
 
     public boolean protectCraftingTable() {
-        return protectCraftingTable;
+        return flag("protection.crafting-table");
     }
 
     public boolean protectCartographyTable() {
-        return protectCartographyTable;
+        return flag("protection.cartography-table");
     }
 
     public boolean protectCrafter() {
-        return protectCrafter;
+        return flag("protection.crafter");
     }
 
     public boolean protectItemFrames() {
-        return protectItemFrames;
+        return flag("protection.item-frames");
     }
 
     public boolean protectAgainstHoppers() {
-        return protectAgainstHoppers;
+        return flag("protection.hoppers");
     }
 
     /** Whether {@code mapartlock.bypass} does anything at all. */
     public boolean bypassEnabled() {
-        return bypassEnabled;
+        return flag("admin.bypass-enabled");
     }
 
     public boolean logActions() {
-        return logActions;
+        return flag("admin.log-actions");
     }
 
     /** Human-readable summary of what is being protected, for the reload response. */
     public String activeProtections() {
         StringBuilder active = new StringBuilder();
-        append(active, protectAnvil, "aambeeld");
-        append(active, protectCraftingTable, "crafting");
-        append(active, protectCartographyTable, "cartografietafel");
-        append(active, protectCrafter, "crafter");
-        append(active, protectItemFrames, "item frames");
-        append(active, protectAgainstHoppers, "hoppers");
+        append(active, protectAnvil(), "aambeeld");
+        append(active, protectCraftingTable(), "crafting");
+        append(active, protectCartographyTable(), "cartografietafel");
+        append(active, protectCrafter(), "crafter");
+        append(active, protectItemFrames(), "item frames");
+        append(active, protectAgainstHoppers(), "hoppers");
         return active.isEmpty() ? "geen" : active.toString();
+    }
+
+    /** Everything defaults to on, so a missing key protects rather than exposes. */
+    private boolean flag(String path) {
+        return plugin.getConfig().getBoolean(path, true);
     }
 
     private void append(StringBuilder target, boolean enabled, String name) {

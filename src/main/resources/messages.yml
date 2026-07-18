@@ -19,7 +19,7 @@ protected_inventory_blocked: "<prefix><red>Beschermde map art kan hier niet word
 item_frame_protected: "<prefix><red>De map art in dit item frame is beschermd.</red>"
 usage: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold>"
 usage_admin: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold><yellow>,</yellow> <gold>/mapartlock reload</gold>"
-config_reloaded: "<prefix><yellow>Configuratie en berichten zijn herladen.</yellow><newline><gray>Actieve locks:</gray> <yellow><locks></yellow><newline><gray>Bescherming:</gray> <yellow><protections></yellow>"
+config_reloaded: "<prefix><yellow>Configuratie en berichten zijn herladen.</yellow><newline><gray>Bescherming:</gray> <yellow><protections></yellow>"
 
 # Lore op een beschermde kaart.
 lore:
