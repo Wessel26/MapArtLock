@@ -1,5 +1,6 @@
 plugins {
     java
+    alias(libs.plugins.sonarqube)
     alias(libs.plugins.run.paper)
 }
 
@@ -38,5 +39,13 @@ tasks {
     runServer {
         minecraftVersion(libs.versions.minecraft.get())
         jvmArgs("-Xms2G", "-Xmx2G", "-Dcom.mojang.eula.agree=true")
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "map-art-lock")
+        property("sonar.projectVersion", project.version.toString())
+        property("sonar.sourceEncoding", "UTF-8")
     }
 }

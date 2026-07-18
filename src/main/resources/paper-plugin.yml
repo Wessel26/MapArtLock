@@ -8,29 +8,25 @@ load: POSTWORLD
 authors: [ ChimpGamer, HetGoed ]
 description: Beschermt map art tegen duplicatie, diefstal en vernieling.
 
-# LET OP - de twee prefixen zijn bewust gescheiden, en die scheiding is de beveiliging.
-#
-# mapartlock.* is de spelersnode. Hij is de enige node onder "mapartlock.", dus die
-# wildcard spant over een lege namespace en kan nergens in expanderen. Alle
-# beheerdersrechten heten daarom mapart. en vallen erbuiten.
-#
-# Voeg NOOIT een tweede node toe die met "mapartlock." begint. Een mapartlock.admin
-# zou door de wildcard worden opgeslokt en aan iedere speler gegeven worden.
-# Nieuwe rechten horen onder mapart. te komen.
+# LET OP - geef nooit een node hieronder een asterisk.
+# Alles ligt onder mapartlock., dus "mapartlock.*" zou over admin, bypass en reload
+# heen spannen: elke speler die hem krijgt wordt beheerder. Wil je als serverbeheerder
+# alles in een keer geven, gebruik dan mapartlock.* in je permissieplugin - de plugin
+# zelf controleert die node nergens op. De hierarchie loopt via mapartlock.admin.
 permissions:
-  mapartlock.*:
-    description: "Spelersrechten: menu openen en eigen map art locken/unlocken."
+  mapartlock.use:
+    description: "Menu openen en eigen map art locken/unlocken."
     default: false
-  mapart.bypass:
+  mapartlock.bypass:
     description: "Door de bescherming heen werken."
     default: false
-  mapart.reload:
+  mapartlock.reload:
     description: "/mapartlock reload gebruiken."
     default: false
-  mapart.admin:
+  mapartlock.admin:
     description: "Volledige beheerdersrechten, inclusief andermans map art unlocken."
     default: op
     children:
-      mapartlock.*: true
-      mapart.bypass: true
-      mapart.reload: true
+      mapartlock.use: true
+      mapartlock.bypass: true
+      mapartlock.reload: true

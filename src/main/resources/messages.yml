@@ -1,29 +1,30 @@
 # Alle teksten gebruiken MiniMessage: https://docs.advntr.dev/minimessage/format.html
 #
-# De prefix wordt automatisch voor elk chatbericht geplakt. Zet hem dus NIET opnieuw
-# in de losse berichten hieronder, anders verschijnt hij dubbel.
+# <prefix> plakt de prefix van hieronder in het bericht. Zet hem waar je hem wilt, of
+# laat hem weg als een bericht geen prefix hoort te hebben. De prefix zelf staat maar
+# op een plek, dus aanpassen is een regel.
 
 prefix: "<gray>[</gray><gold>TC</gold><gray>]</gray> "
 
-map_locked: "<#ff8c00>MapArt</#ff8c00> <yellow>is succesvol gelockt.</yellow>"
-map_unlocked: "<#ff8c00>MapArt</#ff8c00> <yellow>is succesvol ontgrendeld.</yellow>"
-already_locked: "<#ff8c00>MapArt</#ff8c00> <yellow>is al gelockt.</yellow>"
-already_unlocked: "<#ff8c00>MapArt</#ff8c00> <yellow>is al ontgrendeld.</yellow>"
-not_owner: "<#ff8c00>MapArt</#ff8c00> <red>behoort niet aan jou.</red>"
-must_hold_map: "<yellow>Je moet een</yellow> <#ff8c00>ingevulde kaart</#ff8c00> <yellow>vasthouden.</yellow>"
-map_has_no_data: "<red>Deze kaart heeft nog geen map-data en kan niet gelockt worden.</red>"
-no_permission: "<red>Je hebt hier geen rechten voor.</red>"
-players_only: "<red>Dit commando kan alleen door een speler gebruikt worden.</red>"
-protected_inventory_blocked: "<#ff8c00>MapArt</#ff8c00> <red>kan hier niet worden geplaatst.</red>"
-item_frame_protected: "<#ff8c00>MapArt</#ff8c00> <red>in dit item frame is beschermd.</red>"
-usage: "<yellow>Gebruik:</yellow> <#ff8c00>/mapartlock</#ff8c00>"
-usage_admin: "<yellow>Gebruik:</yellow> <#ff8c00>/mapartlock</#ff8c00><yellow>,</yellow> <#ff8c00>/mapartlock reload</#ff8c00>"
-config_reloaded: "<#ff8c00>MapArtLock</#ff8c00> <yellow>configuratie en berichten zijn herladen.</yellow><newline><gray>Actieve locks:</gray> <yellow><locks></yellow><newline><gray>Bescherming:</gray> <yellow><protections></yellow>"
+map_locked: "<prefix><yellow>Deze map art is nu beschermd.</yellow>"
+map_unlocked: "<prefix><yellow>De bescherming is verwijderd.</yellow>"
+already_locked: "<prefix><yellow>Deze map art is al beschermd.</yellow>"
+already_unlocked: "<prefix><yellow>Deze map art is niet beschermd.</yellow>"
+not_owner: "<prefix><red>Deze map art is niet van jou.</red>"
+must_hold_map: "<prefix><yellow>Houd een ingevulde kaart vast.</yellow>"
+map_has_no_data: "<prefix><red>Deze kaart heeft nog geen map-data en kan niet beschermd worden.</red>"
+no_permission: "<prefix><red>Je hebt hier geen rechten voor.</red>"
+players_only: "<prefix><red>Dit commando kan alleen door een speler gebruikt worden.</red>"
+protected_inventory_blocked: "<prefix><red>Beschermde map art kan hier niet worden geplaatst.</red>"
+item_frame_protected: "<prefix><red>De map art in dit item frame is beschermd.</red>"
+usage: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold>"
+usage_admin: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold><yellow>,</yellow> <gold>/mapartlock reload</gold>"
+config_reloaded: "<prefix><yellow>Configuratie en berichten zijn herladen.</yellow><newline><gray>Actieve locks:</gray> <yellow><locks></yellow><newline><gray>Bescherming:</gray> <yellow><protections></yellow>"
 
-# Lore op een gelockte kaart.
+# Lore op een beschermde kaart.
 lore:
   header: "<gold>MapArt Protection</gold>"
-  status: "<gray>Status: <green>Gelockt</green></gray>"
+  status: "<gray>Status: <green>Beschermd</green></gray>"
   owner: "<gray>Eigenaar: <white><owner></white></gray>"
 
 menu:
@@ -31,14 +32,14 @@ menu:
   lock:
     name: "<green>Lock</green>"
     lore: "<gray>Bescherm deze map art.</gray>"
-    lore_disabled: "<dark_gray>Deze map art is al gelockt.</dark_gray>"
+    lore_disabled: "<dark_gray>Deze map art is al beschermd.</dark_gray>"
   unlock:
     name: "<red>Unlock</red>"
     lore: "<gray>Verwijder de bescherming.</gray>"
-    lore_disabled: "<dark_gray>Deze map art is niet gelockt.</dark_gray>"
+    lore_disabled: "<dark_gray>Deze map art is niet beschermd.</dark_gray>"
   info:
     map_id: "<gray>Map ID: <white><map_id></white></gray>"
-    status_locked: "<gray>Status: <green>Gelockt</green></gray>"
-    status_unlocked: "<gray>Status: <yellow>Niet gelockt</yellow></gray>"
+    status_locked: "<gray>Status: <green>Beschermd</green></gray>"
+    status_unlocked: "<gray>Status: <yellow>Niet beschermd</yellow></gray>"
     owner: "<gray>Eigenaar: <white><owner></white></gray>"
-    locked_at: "<gray>Gelockt op: <white><locked_at></white></gray>"
+    locked_at: "<gray>Beschermd op: <white><locked_at></white></gray>"
