@@ -16,10 +16,10 @@ map_has_no_data: "<prefix><red>Deze kaart heeft nog geen map-data en kan niet be
 no_permission: "<prefix><red>Je hebt hier geen rechten voor.</red>"
 players_only: "<prefix><red>Dit commando kan alleen door een speler gebruikt worden.</red>"
 protected_inventory_blocked: "<prefix><red>Beschermde map art kan hier niet worden geplaatst.</red>"
-item_frame_protected: "<prefix><red>De map art in dit item frame is beschermd.</red>"
 usage: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold>"
 usage_admin: "<prefix><yellow>Gebruik:</yellow> <gold>/mapartlock</gold><yellow>,</yellow> <gold>/mapartlock reload</gold>"
 config_reloaded: "<prefix><yellow>Configuratie en berichten zijn herladen.</yellow><newline><gray>Bescherming:</gray> <yellow><protections></yellow>"
+command_description: "Beheer de bescherming van map art."
 
 # Lore op een beschermde kaart.
 lore:
@@ -42,4 +42,14 @@ menu:
     status_locked: "<gray>Status: <green>Beschermd</green></gray>"
     status_unlocked: "<gray>Status: <yellow>Niet beschermd</yellow></gray>"
     owner: "<gray>Eigenaar: <white><owner></white></gray>"
-    locked_at: "<gray>Beschermd op: <white><locked_at></white></gray>"
+    locked_at: "<gray>Beschermd op: <white><locked_at:'dd-MM-yyyy HH:mm'></white></gray>"
+
+# Namen in de opsomming van /mapartlock reload.
+protections:
+  anvil: "aambeeld"
+  crafting_table: "crafting table"
+  cartography_table: "cartografietafel"
+  crafter: "crafter"
+  hoppers: "hoppers"
+  separator: ", "
+  none: "geen"

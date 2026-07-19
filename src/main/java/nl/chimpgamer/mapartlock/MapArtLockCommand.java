@@ -2,6 +2,8 @@ package nl.chimpgamer.mapartlock;
 
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.JoinConfiguration;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import nl.chimpgamer.mapartlock.config.Messages;
 import nl.chimpgamer.mapartlock.config.Settings;
@@ -11,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jspecify.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -98,6 +101,31 @@ public final class MapArtLockCommand implements BasicCommand {
         messages.reload();
 
         messages.send(sender, "config_reloaded",
-                Placeholder.unparsed("protections", settings.activeProtections()));
+                Placeholder.component("protections", activeProtections()));
+    }
+
+    /**
+     * Names come from messages.yml rather than the code, so the summary stays in the server's
+     * own language without a recompile.
+     */
+    private Component activeProtections() {
+        List<Component> active = new ArrayList<>();
+        addIfEnabled(active, settings.protectAnvil(), "protections.anvil");
+        addIfEnabled(active, settings.protectCraftingTable(), "protections.crafting_table");
+        addIfEnabled(active, settings.protectCartographyTable(), "protections.cartography_table");
+        addIfEnabled(active, settings.protectCrafter(), "protections.crafter");
+        addIfEnabled(active, settings.protectAgainstHoppers(), "protections.hoppers");
+
+        if (active.isEmpty()) {
+            return messages.render("protections.none");
+        }
+        return Component.join(
+                JoinConfiguration.separator(messages.render("protections.separator")), active);
+    }
+
+    private void addIfEnabled(List<Component> target, boolean enabled, String key) {
+        if (enabled) {
+            target.add(messages.render(key));
+        }
     }
 }

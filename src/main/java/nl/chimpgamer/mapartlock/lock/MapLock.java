@@ -12,10 +12,10 @@ import java.util.UUID;
 public record MapLock(UUID owner, Instant lockedAt) {
     public MapLock {
         if (owner == null) {
-            throw new IllegalArgumentException("owner mag niet null zijn");
+            throw new IllegalArgumentException("owner must not be null");
         }
         if (lockedAt == null) {
-            throw new IllegalArgumentException("lockedAt mag niet null zijn");
+            throw new IllegalArgumentException("lockedAt must not be null");
         }
     }
 

@@ -37,7 +37,7 @@ public final class UuidType implements PersistentDataType<byte[], UUID> {
     @Override
     public @NotNull UUID fromPrimitive(byte @NotNull [] primitive, @NotNull PersistentDataAdapterContext context) {
         if (primitive.length != BYTES) {
-            throw new IllegalArgumentException("UUID moet " + BYTES + " bytes zijn, was " + primitive.length);
+            throw new IllegalArgumentException("UUID must be " + BYTES + " bytes, was " + primitive.length);
         }
 
         ByteBuffer buffer = ByteBuffer.wrap(primitive);

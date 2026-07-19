@@ -44,10 +44,6 @@ public final class Settings {
         return flag("protection.crafter");
     }
 
-    public boolean protectItemFrames() {
-        return flag("protection.item-frames");
-    }
-
     public boolean protectAgainstHoppers() {
         return flag("protection.hoppers");
     }
@@ -61,30 +57,8 @@ public final class Settings {
         return flag("admin.log-actions");
     }
 
-    /** Human-readable summary of what is being protected, for the reload response. */
-    public String activeProtections() {
-        StringBuilder active = new StringBuilder();
-        append(active, protectAnvil(), "aambeeld");
-        append(active, protectCraftingTable(), "crafting");
-        append(active, protectCartographyTable(), "cartografietafel");
-        append(active, protectCrafter(), "crafter");
-        append(active, protectItemFrames(), "item frames");
-        append(active, protectAgainstHoppers(), "hoppers");
-        return active.isEmpty() ? "geen" : active.toString();
-    }
-
     /** Everything defaults to on, so a missing key protects rather than exposes. */
     private boolean flag(String path) {
         return plugin.getConfig().getBoolean(path, true);
-    }
-
-    private void append(StringBuilder target, boolean enabled, String name) {
-        if (!enabled) {
-            return;
-        }
-        if (!target.isEmpty()) {
-            target.append(", ");
-        }
-        target.append(name);
     }
 }

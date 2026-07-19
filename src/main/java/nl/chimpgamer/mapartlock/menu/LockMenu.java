@@ -2,6 +2,7 @@ package nl.chimpgamer.mapartlock.menu;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.kyori.adventure.text.minimessage.tag.resolver.Formatter;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import nl.chimpgamer.mapartlock.config.Messages;
 import nl.chimpgamer.mapartlock.lock.MapLock;
@@ -14,9 +15,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.time.Instant;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,9 +26,6 @@ public final class LockMenu {
     public static final int LOCK_SLOT = 11;
     public static final int MAP_SLOT = 13;
     public static final int UNLOCK_SLOT = 15;
-
-    private static final DateTimeFormatter TIMESTAMP =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone(ZoneId.systemDefault());
 
     private final MapLockService service;
     private final Messages messages;
@@ -94,17 +90,13 @@ public final class LockMenu {
             lines.add(plain(messages.render("menu.info.owner",
                     Placeholder.unparsed("owner", service.ownerName(lock.get().owner())))));
             lines.add(plain(messages.render("menu.info.locked_at",
-                    Placeholder.unparsed("locked_at", format(lock.get().lockedAt())))));
+                    Formatter.date("locked_at", lock.get().lockedAt().atZone(ZoneId.systemDefault())))));
         } else {
             lines.add(plain(messages.render("menu.info.status_unlocked")));
         }
 
         display.editMeta(meta -> meta.lore(lines));
         return display;
-    }
-
-    private static String format(Instant instant) {
-        return TIMESTAMP.format(instant);
     }
 
     private ItemStack button(Material material, Component name, Component lore) {

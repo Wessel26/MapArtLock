@@ -6,25 +6,25 @@ api-version: '1.21'
 load: POSTWORLD
 
 authors: [ ChimpGamer, HetGoed ]
-description: Beschermt map art tegen duplicatie, diefstal en vernieling.
+description: Protects map art against duplication, theft and destruction.
 
-# LET OP - geef nooit een node hieronder een asterisk.
-# Alles ligt onder mapartlock., dus "mapartlock.*" zou over admin, bypass en reload
-# heen spannen: elke speler die hem krijgt wordt beheerder. Wil je als serverbeheerder
-# alles in een keer geven, gebruik dan mapartlock.* in je permissieplugin - de plugin
-# zelf controleert die node nergens op. De hierarchie loopt via mapartlock.admin.
+# NOTE - never give a node below an asterisk.
+# Everything lives under mapartlock., so "mapartlock.*" would span admin, bypass and
+# reload as well: any player granted it becomes an administrator. To hand out everything
+# at once as a server owner, use mapartlock.* in your permission plugin — the plugin
+# itself never checks that node. The hierarchy runs through mapartlock.admin.
 permissions:
   mapartlock.use:
-    description: "Menu openen en eigen map art locken/unlocken."
+    description: "Open the menu and protect or release your own map art."
     default: false
   mapartlock.bypass:
-    description: "Door de bescherming heen werken."
+    description: "Work through the protection."
     default: false
   mapartlock.reload:
-    description: "/mapartlock reload gebruiken."
+    description: "Use /mapartlock reload."
     default: false
   mapartlock.admin:
-    description: "Volledige beheerdersrechten, inclusief andermans map art unlocken."
+    description: "Full administrative rights, including releasing other players' map art."
     default: op
     children:
       mapartlock.use: true

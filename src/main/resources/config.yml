@@ -1,15 +1,18 @@
 # MapArtLock
 #
-# De bescherming staat in de persistent data container van de kaart zelf. Er is dus
-# geen opslagbestand, niets in het geheugen en niets om te synchroniseren: de
-# bescherming reist mee in kisten, shulkers en backups.
+# The lock lives in the persistent data container of the map itself. There is no storage
+# file, nothing held in memory and nothing to keep in sync: protection travels with the
+# item into chests, shulkers and backups on its own.
 #
-# Let op: bescherming volgt het item, niet het kunstwerk. Wie /give kan draaien maakt
-# een onbeschermde kopie - maar met die rechten kan hij deze plugin ook uitzetten.
+# Note that protection follows the item, not the artwork. Anyone who can run /give makes
+# an unprotected copy — but with those powers they could disable this plugin anyway.
+#
+# Item frames are deliberately not protected: whoever holds the map may hang it and take
+# it down. That keeps map art tradeable, since ownership does not transfer with the item.
 
 menu:
-  # Sneak + rechtermuisknop op een ingevulde kaart opent het menu.
-  # Bewust sneak: een gewone rechtermuisknop plaatst de kaart in een item frame.
+  # Sneak + right click on a filled map opens the menu.
+  # Sneak is deliberate: a plain right click is what puts a map into an item frame.
   open-on-sneak-right-click: true
 
 appearance:
@@ -21,13 +24,11 @@ protection:
   crafting-table: true
   cartography-table: true
   crafter: true
-  # Voorkomt dat een gelockte kaart uit een frame gehaald, gedraaid of weggeblazen
-  # wordt. Een kaart in een leeg frame plaatsen blijft gewoon werken.
-  item-frames: true
   hoppers: true
 
 admin:
-  # Of mapartlock.bypass iets doet. Op false is de bescherming absoluut, ook voor jou.
+  # Whether mapartlock.bypass does anything at all. On false the protection is absolute,
+  # including for administrators.
   bypass-enabled: true
-  # Logt lock- en unlock-acties naar de console.
+  # Logs lock and unlock actions to the console.
   log-actions: true

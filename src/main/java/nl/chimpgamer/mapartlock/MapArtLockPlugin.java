@@ -1,10 +1,11 @@
 package nl.chimpgamer.mapartlock;
 
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import nl.chimpgamer.mapartlock.config.Messages;
 import nl.chimpgamer.mapartlock.config.Settings;
 import nl.chimpgamer.mapartlock.item.MapDecorator;
 import nl.chimpgamer.mapartlock.listener.InventoryProtectionListener;
-import nl.chimpgamer.mapartlock.listener.ItemFrameProtectionListener;
 import nl.chimpgamer.mapartlock.listener.MenuListener;
 import nl.chimpgamer.mapartlock.lock.MapLockService;
 import nl.chimpgamer.mapartlock.menu.LockMenu;
@@ -29,12 +30,16 @@ public final class MapArtLockPlugin extends JavaPlugin {
         MapLockService service = new MapLockService(this, settings, decorator);
         LockMenu menu = new LockMenu(service, messages);
 
-        registerCommand("mapartlock", "Beheer de bescherming van map art.", List.of(),
+        registerCommand("mapartlock", plainText(messages.render("command_description")), List.of(),
                 new MapArtLockCommand(this, settings, messages, menu));
 
         PluginManager plugins = getServer().getPluginManager();
         plugins.registerEvents(new MenuListener(this, settings, service, menu, messages), this);
         plugins.registerEvents(new InventoryProtectionListener(settings, service, messages), this);
-        plugins.registerEvents(new ItemFrameProtectionListener(settings, service, messages), this);
+    }
+
+    /** The command description is shown in /help, so it belongs in messages.yml like other player-facing text. */
+    private static String plainText(Component component) {
+        return PlainTextComponentSerializer.plainText().serialize(component);
     }
 }

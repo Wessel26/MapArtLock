@@ -68,7 +68,7 @@ public final class Messages {
         if (PREFIX_KEY.equals(key)) {
             return current.getString(key, "");
         }
-        return current.getString(key, "<red>Ontbrekend bericht: " + key);
+        return current.getString(key, "<red>Missing Messages: " + key);
     }
 
     private FileConfiguration loadBundled() {
@@ -78,7 +78,7 @@ public final class Messages {
             }
             return YamlConfiguration.loadConfiguration(new InputStreamReader(stream, StandardCharsets.UTF_8));
         } catch (IOException exception) {
-            plugin.getLogger().log(Level.WARNING, "Kon de standaard messages.yml niet laden", exception);
+            plugin.getLogger().log(Level.WARNING, "Could not load the bundled messages.yml", exception);
             return new YamlConfiguration();
         }
     }
@@ -100,7 +100,7 @@ public final class Messages {
         try {
             current.save(file);
         } catch (IOException exception) {
-            plugin.getLogger().log(Level.WARNING, "Kon messages.yml niet bijwerken", exception);
+            plugin.getLogger().log(Level.WARNING, "Could not write missing defaults to messages.yml", exception);
         }
     }
 }
